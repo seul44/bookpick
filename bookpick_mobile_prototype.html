@@ -1,0 +1,540 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --cream:#F6F3EE;--white:#FFFFFF;--ink:#1A1A1A;--ink2:#5C5C5C;--ink3:#9E9E9E;
+    --green:#2A5240;--green-l:#E4EDE7;--green-m:#3D7A5C;
+    --border:#E0DBD3;--r:14px;--rs:9px;
+    --serif:'Noto Serif KR',Georgia,serif;--sans:'Noto Sans KR',sans-serif;
+  }
+  body{font-family:var(--sans);background:#D6D0C7;display:flex;justify-content:center;align-items:flex-start;padding:20px 0 40px;min-height:100vh}
+  .phone{width:375px;background:var(--cream);border-radius:40px;overflow:hidden;
+    box-shadow:0 24px 64px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.07);position:relative;height:780px}
+  .screens{display:flex;width:500%;height:100%;transition:transform .38s cubic-bezier(.4,0,.2,1)}
+  .screen{width:20%;height:100%;overflow-y:auto;overflow-x:hidden;flex-shrink:0;scrollbar-width:none}
+  .screen::-webkit-scrollbar{display:none}
+
+  /* topbar */
+  .tb{display:flex;align-items:center;padding:48px 22px 14px;gap:10px;background:var(--cream);position:sticky;top:0;z-index:5}
+  .tb-back{width:34px;height:34px;border:none;background:none;cursor:pointer;color:var(--ink);font-size:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .tb-back:hover{background:var(--border)}
+  .tb-title{flex:1;text-align:center;font-size:15px;font-weight:700;color:var(--ink)}
+  .tb-sp{width:34px}
+
+  /* btns */
+  .btn{display:block;width:100%;padding:15px;border:none;border-radius:var(--r);font-family:var(--sans);font-size:15px;font-weight:700;cursor:pointer;text-align:center;letter-spacing:-.2px;transition:all .15s}
+  .btn-p{background:var(--green);color:#fff}.btn-p:hover{background:var(--green-m)}.btn-p:active{transform:scale(.98)}
+  .btn-g{background:transparent;color:var(--green);border:1.5px solid var(--green)}.btn-g:hover{background:var(--green-l)}
+  .chip{padding:8px 14px;background:var(--white);border:1.5px solid var(--border);border-radius:100px;font-size:13px;font-weight:500;color:var(--ink2);cursor:pointer;transition:all .15s;user-select:none;display:inline-block}
+  .chip:hover{border-color:var(--green);color:var(--green)}
+  .chip.on{background:var(--green);border-color:var(--green);color:#fff}
+  .badge{display:inline-block;padding:3px 9px;border-radius:100px;font-size:11px;font-weight:700}
+  .badge-g{background:var(--green-l);color:var(--green)}
+  .badge-a{background:#FFF3D4;color:#7A5E00}
+  .sec-lbl{font-size:11px;font-weight:700;color:var(--ink3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:9px}
+
+  /* ── S1 start ── */
+  #s1{background:var(--cream)}
+  .s1-logo{font-family:var(--serif);font-size:12px;font-weight:400;color:var(--green);letter-spacing:4px;text-transform:uppercase}
+  .s1-h{font-family:var(--serif);font-size:26px;font-weight:600;color:var(--ink);line-height:1.45;margin:26px 0 10px}
+  .s1-sub{font-size:13px;color:var(--ink2);line-height:1.7}
+  .book-wall{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:24px 0}
+  .book-spine{border-radius:3px;position:relative;overflow:hidden}
+  .book-spine::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.18),transparent)}
+  .feat-row{display:flex;flex-direction:column;gap:7px;margin:0 0 22px}
+  .feat{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--white);border-radius:var(--rs);border:1px solid var(--border)}
+  .feat-ico{font-size:15px;width:20px;text-align:center}
+  .feat-txt{font-size:12px;color:var(--ink2);font-weight:500}
+  .persona-row{display:flex;gap:8px;margin:0 0 22px;overflow-x:auto;scrollbar-width:none}
+  .persona-row::-webkit-scrollbar{display:none}
+  .persona-card{flex-shrink:0;background:var(--white);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;width:140px}
+  .persona-tag{font-size:10px;font-weight:700;color:var(--green);letter-spacing:.5px;margin-bottom:4px}
+  .persona-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
+  .persona-desc{font-size:11px;color:var(--ink2);line-height:1.5}
+
+  /* ── S2 input ── */
+  .inp-wrap{padding:4px 22px 32px;display:flex;flex-direction:column;gap:24px}
+  .inp-guide{font-family:var(--serif);font-size:17px;color:var(--ink);line-height:1.5}
+  .chip-group{display:flex;flex-wrap:wrap;gap:7px}
+  .radio-grp{display:flex;flex-direction:column;gap:7px}
+  .radio-row{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .15s}
+  .radio-row:hover{border-color:var(--green)}
+  .radio-row.on{border-color:var(--green);background:var(--green-l)}
+  .radio-dot{width:17px;height:17px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+  .radio-row.on .radio-dot{border-color:var(--green);background:var(--green)}
+  .radio-row.on .radio-dot::after{content:'';width:5px;height:5px;background:#fff;border-radius:50%}
+  .radio-lbl{font-size:13px;color:var(--ink);font-weight:500}
+  .free-ta{width:100%;padding:11px 13px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--rs);font-family:var(--sans);font-size:13px;color:var(--ink);resize:none;outline:none;line-height:1.6}
+  .free-ta:focus{border-color:var(--green)}
+  .free-ta::placeholder{color:var(--ink3)}
+  .inp-cta{padding:0 22px 44px;position:sticky;bottom:0;background:linear-gradient(to bottom,transparent,var(--cream) 30%)}
+
+  /* ── S3 result ── */
+  .res-wrap{padding:4px 22px 32px;display:flex;flex-direction:column;gap:14px}
+  .res-sum{font-family:var(--serif);font-size:16px;color:var(--ink);line-height:1.5}
+  .kw-row{display:flex;flex-wrap:wrap;gap:6px}
+  .kw-tag{padding:4px 10px;background:var(--green-l);color:var(--green);border-radius:100px;font-size:12px;font-weight:600}
+  .filter-row{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .filter-row::-webkit-scrollbar{display:none}
+  .flt-btn{flex-shrink:0;padding:7px 13px;background:var(--white);border:1.5px solid var(--border);border-radius:100px;font-size:12px;font-weight:500;color:var(--ink2);cursor:pointer;white-space:nowrap;transition:all .15s}
+  .flt-btn.on,.flt-btn:hover{border-color:var(--green);color:var(--green);background:var(--green-l)}
+  .rcard{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s}
+  .rcard:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+  .rcard-top{display:flex;gap:13px;padding:15px 15px 12px}
+  .rcard-cover{width:62px;height:86px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:rgba(0,0,0,.2);text-align:center;padding:7px;line-height:1.3;position:relative;overflow:hidden}
+  .rcard-cover::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:rgba(0,0,0,.09)}
+  .rcard-meta{flex:1}
+  .rcard-title{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--ink);line-height:1.4;margin-bottom:3px}
+  .rcard-auth{font-size:11px;color:var(--ink3);margin-bottom:5px}
+  .rcard-tags{display:flex;gap:4px;flex-wrap:wrap}
+  .rcard-div{height:1px;background:var(--border);margin:0 15px}
+  .rcard-body{padding:11px 15px 14px}
+  .rl-lbl{font-size:10px;font-weight:700;color:var(--green);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+  .rl-txt{font-size:12px;color:var(--ink2);line-height:1.6;margin-bottom:10px}
+  .sum-list{list-style:none;display:flex;flex-direction:column;gap:3px}
+  .sum-list li{font-size:12px;color:var(--ink2);line-height:1.5;padding-left:11px;position:relative}
+  .sum-list li::before{content:'—';position:absolute;left:0;color:var(--green);font-size:9px;top:3px}
+  .rcard-actions{display:flex;gap:7px;padding:0 15px 14px}
+  .rc-btn-d{flex:1;padding:9px;background:var(--ink);color:#fff;border:none;border-radius:var(--rs);font-family:var(--sans);font-size:12px;font-weight:700;cursor:pointer;transition:background .15s}
+  .rc-btn-d:hover{background:#333}
+  .rc-btn-s{flex:1;padding:9px;background:var(--green-l);color:var(--green);border:1.5px solid var(--green);border-radius:var(--rs);font-family:var(--sans);font-size:12px;font-weight:700;cursor:pointer}
+
+  /* ── S4 detail ── */
+  .det-cover-area{padding:14px 22px 20px;display:flex;gap:16px;background:var(--white);border-bottom:1px solid var(--border)}
+  .det-cover{width:88px;height:122px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;color:rgba(0,0,0,.18);text-align:center;padding:9px;line-height:1.4;position:relative;overflow:hidden}
+  .det-cover::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:rgba(0,0,0,.09)}
+  .det-info{flex:1;padding-top:2px}
+  .det-title{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);line-height:1.4;margin-bottom:5px}
+  .det-auth{font-size:12px;color:var(--ink3);margin-bottom:7px}
+  .det-sec{padding:18px 22px;border-bottom:1px solid var(--border)}
+  .sh{font-size:11px;font-weight:700;color:var(--green);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:9px}
+  .det-reason{font-size:13px;color:var(--ink2);line-height:1.7}
+  .det-sum-list{list-style:none;display:flex;flex-direction:column;gap:7px}
+  .det-sum-list li{display:flex;gap:9px;font-size:13px;color:var(--ink);line-height:1.6}
+  .sn{width:19px;height:19px;border-radius:50%;background:var(--green);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .det-desc{font-size:13px;color:var(--ink2);line-height:1.75}
+  .data-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .di{background:var(--green-l);border-radius:var(--rs);padding:11px}
+  .dk{font-size:10px;color:var(--green);font-weight:700;margin-bottom:2px}
+  .dv{font-size:12px;color:var(--ink);font-weight:500}
+  .det-act{display:flex;gap:10px;padding:18px 22px 44px;position:sticky;bottom:0;background:var(--cream);border-top:1px solid var(--border)}
+
+  /* ── S5 saved ── */
+  .saved-wrap{padding:4px 22px 44px;display:flex;flex-direction:column;gap:12px}
+  .success-banner{background:var(--green-l);border:1px solid var(--green);border-radius:var(--r);padding:16px;text-align:center;margin-bottom:4px}
+  .sb-ico{font-size:28px;margin-bottom:6px}
+  .sb-title{font-family:var(--serif);font-size:16px;color:var(--green);font-weight:600;margin-bottom:3px}
+  .sb-sub{font-size:12px;color:var(--green-m);line-height:1.5}
+  .saved-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);display:flex;gap:12px;padding:13px}
+  .sv-thumb{width:48px;height:68px;border-radius:4px;flex-shrink:0;position:relative;overflow:hidden}
+  .sv-thumb::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:rgba(0,0,0,.09)}
+  .sv-meta{flex:1}
+  .sv-title{font-family:var(--serif);font-size:14px;font-weight:600;color:var(--ink);margin-bottom:2px}
+  .sv-auth{font-size:11px;color:var(--ink3);margin-bottom:5px}
+  .sv-note{font-size:11px;color:var(--ink2);line-height:1.5;padding-top:5px;border-top:1px solid var(--border);margin-top:5px}
+</style>
+
+<div style="display:flex;justify-content:center;padding:0 0 20px">
+<div class="phone">
+<div class="screens" id="screens">
+
+<!-- S1 시작 -->
+<div class="screen" id="s1" style="background:var(--cream)">
+  <div style="padding:54px 22px 0">
+    <div class="s1-logo">BookPick</div>
+    <h1 class="s1-h">지금 내 취향에<br>맞는 책을 빠르게<br>추천받아보세요</h1>
+    <p class="s1-sub">기분과 상황만 선택하면<br>AI가 딱 맞는 책을 찾아드려요</p>
+
+    <div class="book-wall" id="bookWall"></div>
+
+    <div style="margin-bottom:18px">
+      <div class="sec-lbl">이런 분들을 위해 만들었어요</div>
+      <div class="persona-row">
+        <div class="persona-card">
+          <div class="persona-tag">직장인</div>
+          <div class="persona-name">A씨</div>
+          <div class="persona-desc">바쁜 일상 속 활력이 되어줄 소설·에세이를 찾고 있어요</div>
+        </div>
+        <div class="persona-card">
+          <div class="persona-tag">학생</div>
+          <div class="persona-name">B씨</div>
+          <div class="persona-desc">니체에 관심 있는데 어디서부터 읽어야 할지 모르겠어요</div>
+        </div>
+        <div class="persona-card">
+          <div class="persona-tag">주부</div>
+          <div class="persona-name">C씨</div>
+          <div class="persona-desc">영유아 자녀에게 읽어줄 따뜻한 동화책이 필요해요</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat-row">
+      <div class="feat"><span class="feat-ico">✦</span><span class="feat-txt">취향·상황 기반 맞춤 추천</span></div>
+      <div class="feat"><span class="feat-ico">◎</span><span class="feat-txt">추천 이유 + 3줄 요약 제공</span></div>
+      <div class="feat"><span class="feat-ico">≡</span><span class="feat-txt">저장 & 나중에 다시 보기</span></div>
+    </div>
+  </div>
+  <div style="padding:0 22px 52px;display:flex;flex-direction:column;gap:10px">
+    <button class="btn btn-p" onclick="go(1)">추천 시작하기</button>
+    <button class="btn btn-g" onclick="go(4)">저장한 책 보기</button>
+  </div>
+</div>
+
+<!-- S2 입력 -->
+<div class="screen" id="s2">
+  <div class="tb">
+    <button class="tb-back" onclick="go(0)">←</button>
+    <span class="tb-title">책 추천 입력</span>
+    <div class="tb-sp"></div>
+  </div>
+  <div class="inp-wrap">
+    <p class="inp-guide">지금 읽고 싶은 책의<br>분위기를 선택해주세요</p>
+
+    <div>
+      <div class="sec-lbl">관심 키워드</div>
+      <div class="chip-group" id="kwChips">
+        <div class="chip" data-v="소설">소설</div>
+        <div class="chip" data-v="에세이">에세이</div>
+        <div class="chip" data-v="힐링">힐링</div>
+        <div class="chip" data-v="철학">철학</div>
+        <div class="chip" data-v="동화">동화</div>
+        <div class="chip" data-v="자기계발">자기계발</div>
+        <div class="chip" data-v="인문학">인문학</div>
+        <div class="chip" data-v="위로">위로</div>
+        <div class="chip" data-v="성장">성장</div>
+        <div class="chip" data-v="몰입">몰입</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-lbl">현재 기분</div>
+      <div class="chip-group" id="moodChips">
+        <div class="chip" data-v="지쳤어요">지쳤어요</div>
+        <div class="chip" data-v="가볍게 읽고 싶어요">가볍게 읽고 싶어요</div>
+        <div class="chip" data-v="깊이 생각하고 싶어요">깊이 생각하고 싶어요</div>
+        <div class="chip" data-v="아이와 함께 읽고 싶어요">아이와 함께 읽고 싶어요</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-lbl">읽는 목적</div>
+      <div class="radio-grp" id="purposeGrp">
+        <div class="radio-row" data-v="출퇴근용" onclick="selRadio(this)"><div class="radio-dot"></div><span class="radio-lbl">출퇴근용</span></div>
+        <div class="radio-row" data-v="자기 전" onclick="selRadio(this)"><div class="radio-dot"></div><span class="radio-lbl">자기 전</span></div>
+        <div class="radio-row" data-v="주말 독서" onclick="selRadio(this)"><div class="radio-dot"></div><span class="radio-lbl">주말 독서</span></div>
+        <div class="radio-row" data-v="자녀에게 읽어주기" onclick="selRadio(this)"><div class="radio-dot"></div><span class="radio-lbl">자녀에게 읽어주기</span></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-lbl">직접 입력 (선택)</div>
+      <textarea class="free-ta" id="freeInput" rows="3" placeholder="예: 요즘 너무 지쳐서 가볍게 읽을 수 있는 책이 필요해요"></textarea>
+    </div>
+    <div style="height:60px"></div>
+  </div>
+  <div class="inp-cta">
+    <button class="btn btn-p" onclick="doRecommend()">AI 추천 받기</button>
+  </div>
+</div>
+
+<!-- S3 결과 -->
+<div class="screen" id="s3">
+  <div class="tb">
+    <button class="tb-back" onclick="go(1)">←</button>
+    <span class="tb-title">AI 추천 결과</span>
+    <div class="tb-sp"></div>
+  </div>
+  <div class="res-wrap">
+    <p class="res-sum" id="resSummary">오늘의 분위기에<br>맞는 책을 추천했어요</p>
+    <div class="kw-row" id="resKw"></div>
+    <div class="filter-row">
+      <button class="flt-btn on" onclick="applyFlt(this,'all')">전체</button>
+      <button class="flt-btn" onclick="applyFlt(this,'short')">짧게 읽기</button>
+      <button class="flt-btn" onclick="applyFlt(this,'healing')">힐링</button>
+      <button class="flt-btn" onclick="applyFlt(this,'novel')">소설</button>
+      <button class="flt-btn" onclick="applyFlt(this,'philosophy')">철학</button>
+    </div>
+    <div id="resCards"></div>
+  </div>
+  <div style="padding:0 22px 44px">
+    <button class="btn btn-g" onclick="go(1)">다시 추천받기</button>
+  </div>
+</div>
+
+<!-- S4 상세 -->
+<div class="screen" id="s4">
+  <div class="tb">
+    <button class="tb-back" onclick="go(2)">←</button>
+    <span class="tb-title">책 상세 정보</span>
+    <div class="tb-sp"></div>
+  </div>
+  <div id="detContent"></div>
+  <div class="det-act">
+    <button class="btn btn-p" style="flex:1" onclick="doSave()">저장하기</button>
+    <button class="btn btn-g" style="flex:1" onclick="go(2)">비슷한 책 보기</button>
+  </div>
+</div>
+
+<!-- S5 저장완료 -->
+<div class="screen" id="s5">
+  <div class="tb">
+    <button class="tb-back" onclick="go(2)">←</button>
+    <span class="tb-title">저장한 책</span>
+    <div class="tb-sp"></div>
+  </div>
+  <div class="saved-wrap">
+    <div class="success-banner">
+      <div class="sb-ico">📚</div>
+      <div class="sb-title">저장 완료!</div>
+      <div class="sb-sub" id="sbSub">책이 내 목록에 저장되었어요</div>
+    </div>
+    <div id="savedList"></div>
+    <button class="btn btn-p" style="margin-top:8px" onclick="go(0)">홈으로 돌아가기</button>
+    <button class="btn btn-g" onclick="go(1)">추천 더 받기</button>
+  </div>
+</div>
+
+</div><!-- /screens -->
+</div><!-- /phone -->
+</div>
+
+<script>
+const DB=[
+  {id:'b1',title:'채식주의자',author:'한강',category:'소설',
+   tags:['소설','문학','몰입'],mood:['지쳤어요','깊이 생각하고 싶어요'],purpose:['주말 독서','자기 전'],type:'short',
+   summary:['욕망과 억압, 인간 존재를 강렬하게 탐구하는 소설','세 편의 연작으로 한 여성의 내면 변화를 따라감','짧지만 오랫동안 마음에 남는 묵직한 여운'],
+   reason:'지친 일상 속 깊은 울림이 필요할 때 읽기 좋은 맨부커상 수상 소설이에요.',
+   color:'#C8D8C4',badge:'인기 추천',
+   desc:'욕망과 억압, 자유와 고통을 아름답고 충격적인 방식으로 그려낸 작품. 읽고 나서 오래 생각하게 만드는 소설입니다.'},
+  {id:'b2',title:'아몬드',author:'손원평',category:'소설',
+   tags:['소설','힐링','감동','성장'],mood:['가볍게 읽고 싶어요','지쳤어요'],purpose:['출퇴근용','자기 전'],type:'short',
+   summary:['감정을 느끼지 못하는 소년이 세상과 연결되어 가는 이야기','빠른 호흡으로 단숨에 읽히는 청춘 소설','웃음과 눈물이 교차하는 따뜻한 성장 이야기'],
+   reason:'출퇴근 시간에 단숨에 읽기 좋고, 잔잔한 위로를 전해주는 소설이에요.',
+   color:'#F0D9C8',badge:'많이 선택된 책',
+   desc:'감정을 모르는 소년 윤재가 편도체 기능 이상으로 인해 특별한 경험을 쌓아가며 성장하는 이야기입니다.'},
+  {id:'b3',title:'나는 나로 살기로 했다',author:'김수현',category:'에세이',
+   tags:['에세이','힐링','자기계발','위로','성장'],mood:['지쳤어요','가볍게 읽고 싶어요'],purpose:['출퇴근용','주말 독서'],type:'short',
+   summary:['타인의 시선에서 벗어나 나답게 살기 위한 에세이','짧고 강한 문장들이 페이지마다 고개를 끄덕이게 함','지친 직장인에게 가장 많이 추천된 자존감 회복서'],
+   reason:'바쁜 일상 속 잠깐의 위로와 에너지 충전에 딱 맞는 에세이예요.',
+   color:'#D4D4E8',badge:'많이 선택된 책',
+   desc:'남이 만든 기준이 아닌 온전히 나 자신으로 살기 위한 용기를 이야기하는 에세이집입니다.'},
+  {id:'b4',title:'니체의 말',author:'프리드리히 니체',category:'철학',
+   tags:['철학','인문학','니체','성장','깊이'],mood:['깊이 생각하고 싶어요','가볍게 읽고 싶어요'],purpose:['주말 독서','출퇴근용'],type:'short',
+   summary:['니체의 핵심 사상을 짧고 강렬한 문장으로 엮은 입문서','어렵지 않게 니체 철학을 처음 접하기에 최적','읽을수록 삶의 태도가 달라지는 자기계발 철학서'],
+   reason:'니체를 처음 접한다면 이 책이 가장 부담 없는 시작점이에요.',
+   color:'#E8E4C8',badge:'입문 추천',
+   desc:'차라투스트라는 이렇게 말했다, 선악의 저편 등에서 가려낸 니체의 핵심 문장들을 현대적으로 편집한 책입니다.'},
+  {id:'b5',title:'짜라투스트라는 이렇게 말했다',author:'프리드리히 니체',category:'철학',
+   tags:['철학','인문학','니체','몰입','깊이'],mood:['깊이 생각하고 싶어요'],purpose:['주말 독서'],type:'long',
+   summary:['니체 철학의 정수, 초인 사상을 담은 대표작','시처럼 읽히는 철학 산문으로 독특한 문체','한 번은 반드시 읽어야 할 철학 고전'],
+   reason:'니체의 핵심을 직접 경험하고 싶다면 도전해볼 만한 대표작이에요.',
+   color:'#C8C8D8',badge:'고전 추천',
+   desc:'니체의 대표작. 예언자 짜라투스트라의 입을 빌려 초인, 권력의지, 영원회귀 사상을 산문시 형식으로 전달합니다.'},
+  {id:'b6',title:'달러구트 꿈 백화점',author:'이미예',category:'소설',
+   tags:['소설','힐링','몰입','동화','따뜻함'],mood:['가볍게 읽고 싶어요','지쳤어요','아이와 함께 읽고 싶어요'],purpose:['자기 전','주말 독서'],type:'short',
+   summary:['꿈을 파는 신비로운 백화점을 배경으로 한 따뜻한 판타지','각 챕터마다 독립된 이야기로 부담 없이 읽히는 구성','어른을 위한 동화 같은 분위기로 큰 인기'],
+   reason:'힐링이 필요한 바쁜 직장인에게 가장 많이 추천된 소설이에요.',
+   color:'#E8E0C8',badge:'인기 추천',
+   desc:'잠들기 전 꿈을 사러 가는 신비로운 백화점 이야기. 각자의 소망이 담긴 꿈들을 판매하는 따뜻한 세계관이 펼쳐집니다.'},
+  {id:'b7',title:'강아지똥',author:'권정생',category:'동화',
+   tags:['동화','힐링','감동','아이','따뜻함'],mood:['아이와 함께 읽고 싶어요'],purpose:['자녀에게 읽어주기'],type:'short',
+   summary:['자신이 하찮다고 느끼는 강아지똥이 민들레를 피우는 이야기','어른도 함께 읽으며 삶의 의미를 생각하게 되는 동화','세대를 초월해 사랑받는 한국 동화의 고전'],
+   reason:'영유아에게 읽어주기 딱 좋은 따뜻한 그림책 동화예요.',
+   color:'#D4E8C8',badge:'베스트셀러',
+   desc:'하찮아 보이는 강아지똥도 결국 아름다운 꽃을 피우는 데 쓰인다는 생명과 존재의 아름다움을 노래한 권정생의 대표 동화입니다.'},
+  {id:'b8',title:'구름빵',author:'백희나',category:'동화',
+   tags:['동화','아이','따뜻함','힐링'],mood:['아이와 함께 읽고 싶어요'],purpose:['자녀에게 읽어주기'],type:'short',
+   summary:['구름으로 만든 빵을 먹고 하늘을 날게 되는 상상력 넘치는 이야기','독창적인 콜라주 기법으로 아이들을 매료시키는 그림책','가족의 사랑과 따뜻함이 담긴 베스트셀러 동화'],
+   reason:'시각적으로 매력적이고 아이가 상상력을 키우기에 좋은 그림책이에요.',
+   color:'#C8DCE8',badge:'아동 추천',
+   desc:'비 오는 날 아침 구름으로 만든 빵을 먹고 하늘을 날게 되는 고양이 남매의 이야기. 백희나 작가의 독창적인 콜라주 기법이 돋보입니다.'},
+];
+
+let selKw=[], selMood=[], selPurpose='', recommended=[], savedBooks=[], curBook=null, curFlt='all';
+
+function go(idx){
+  document.getElementById('screens').style.transform=`translateX(-${idx*20}%)`;
+}
+
+// 책 콜라주
+(function(){
+  const colors=['#C8D8C4','#F0D9C8','#D4D4E8','#E8E4C8','#C8C8D8','#E8E0C8','#D4E8C8','#C8DCE8','#E8C8D4','#D8E8C8'];
+  const hs=[78,92,68,84,72,88,76,70,82,66];
+  const w=document.getElementById('bookWall');
+  for(let i=0;i<10;i++){
+    const d=document.createElement('div');
+    d.className='book-spine';
+    d.style.cssText=`background:${colors[i]};height:${hs[i]}px`;
+    w.appendChild(d);
+  }
+})();
+
+// 칩 인터랙션
+document.querySelectorAll('#kwChips .chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    c.classList.toggle('on');
+    const v=c.dataset.v;
+    selKw=selKw.includes(v)?selKw.filter(x=>x!==v):[...selKw,v];
+  });
+});
+document.querySelectorAll('#moodChips .chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    c.classList.toggle('on');
+    const v=c.dataset.v;
+    selMood=selMood.includes(v)?selMood.filter(x=>x!==v):[...selMood,v];
+  });
+});
+
+function selRadio(el){
+  document.querySelectorAll('#purposeGrp .radio-row').forEach(r=>r.classList.remove('on'));
+  el.classList.add('on');
+  selPurpose=el.dataset.v;
+}
+
+function doRecommend(){
+  go(2);
+  // 점수 계산
+  const scored=DB.map(b=>{
+    let s=0;
+    selKw.forEach(k=>{if(b.tags.includes(k))s+=2;if(b.category===k)s+=1;});
+    selMood.forEach(m=>{if(b.mood.includes(m))s+=2;});
+    if(selPurpose&&b.purpose.includes(selPurpose))s+=2;
+    // 기본 점수
+    s+=1;
+    return{...b,score:s};
+  }).sort((a,b)=>b.score-a.score);
+  recommended=scored;
+
+  // 키워드 태그
+  const kws=[...selKw,...selMood].slice(0,5);
+  document.getElementById('resKw').innerHTML=kws.map(k=>`<span class="kw-tag">${k}</span>`).join('');
+  if(kws.length===0) document.getElementById('resKw').innerHTML='<span class="kw-tag">전체 추천</span>';
+
+  renderCards(recommended);
+}
+
+function renderCards(list){
+  const c=document.getElementById('resCards');
+  if(!list.length){c.innerHTML=`<div style="text-align:center;padding:40px 0;color:var(--ink3);font-size:13px">조건에 맞는 책을 찾지 못했어요</div>`;return;}
+  c.innerHTML=list.map(b=>`
+    <div class="rcard" style="margin-bottom:11px" onclick="openDetail('${b.id}')">
+      <div class="rcard-top">
+        <div class="rcard-cover" style="background:${b.color}"><span>${b.category}</span></div>
+        <div class="rcard-meta">
+          <div class="rcard-title">${b.title}</div>
+          <div class="rcard-auth">${b.author}</div>
+          <div class="rcard-tags">
+            <span class="badge badge-g">${b.category}</span>
+            <span class="badge badge-a">${b.badge}</span>
+          </div>
+        </div>
+      </div>
+      <div class="rcard-div"></div>
+      <div class="rcard-body">
+        <div class="rl-lbl">추천 이유</div>
+        <div class="rl-txt">${b.reason}</div>
+        <div class="rl-lbl" style="margin-top:0">3줄 요약</div>
+        <ul class="sum-list">${b.summary.map(s=>`<li>${s}</li>`).join('')}</ul>
+      </div>
+      <div class="rcard-actions">
+        <button class="rc-btn-d" onclick="event.stopPropagation();openDetail('${b.id}')">자세히 보기</button>
+        <button class="rc-btn-s" onclick="event.stopPropagation();quickSave('${b.id}',this)">저장하기</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function applyFlt(el,key){
+  document.querySelectorAll('.flt-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  let f=recommended;
+  if(key==='short') f=f.filter(b=>b.type==='short');
+  else if(key==='healing') f=f.filter(b=>b.tags.includes('힐링'));
+  else if(key==='novel') f=f.filter(b=>b.category==='소설');
+  else if(key==='philosophy') f=f.filter(b=>b.tags.includes('철학'));
+  renderCards(f);
+}
+
+function openDetail(id){
+  curBook=DB.find(b=>b.id===id);
+  if(!curBook)return;
+  document.getElementById('detContent').innerHTML=`
+    <div class="det-cover-area">
+      <div class="det-cover" style="background:${curBook.color}"><span>${curBook.category}</span></div>
+      <div class="det-info">
+        <div class="det-title">${curBook.title}</div>
+        <div class="det-auth">${curBook.author}</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap">
+          <span class="badge badge-g">${curBook.category}</span>
+          <span class="badge badge-a">${curBook.badge}</span>
+        </div>
+      </div>
+    </div>
+    <div class="det-sec">
+      <div class="sh">추천 이유</div>
+      <div class="det-reason">${curBook.reason}</div>
+    </div>
+    <div class="det-sec">
+      <div class="sh">3줄 요약</div>
+      <ul class="det-sum-list">${curBook.summary.map((s,i)=>`<li><span class="sn">${i+1}</span><span>${s}</span></li>`).join('')}</ul>
+    </div>
+    <div class="det-sec">
+      <div class="sh">책 소개</div>
+      <div class="det-desc">${curBook.desc}</div>
+    </div>
+    <div class="det-sec">
+      <div class="sh">데이터 정보</div>
+      <div class="data-grid">
+        <div class="di"><div class="dk">카테고리</div><div class="dv">${curBook.category}</div></div>
+        <div class="di"><div class="dk">추천 배지</div><div class="dv">${curBook.badge}</div></div>
+        <div class="di"><div class="dk">분량</div><div class="dv">${curBook.type==='short'?'빠르게 읽기 좋음':'여유있게 독서'}</div></div>
+        <div class="di"><div class="dk">구매 통계</div><div class="dv">상위 추천</div></div>
+      </div>
+    </div>
+    <div style="height:90px"></div>
+  `;
+  go(3);
+}
+
+function doSave(){
+  if(!curBook)return;
+  if(!savedBooks.find(b=>b.id===curBook.id)) savedBooks.push(curBook);
+  renderSaved();
+  go(4);
+}
+
+function quickSave(id,btn){
+  const b=DB.find(x=>x.id===id);
+  if(b&&!savedBooks.find(x=>x.id===id)) savedBooks.push(b);
+  btn.textContent='저장됨 ✓';
+  btn.style.background='#c8e6c9';
+  btn.disabled=true;
+  curBook=b;
+  renderSaved();
+}
+
+function renderSaved(){
+  document.getElementById('sbSub').textContent=`총 ${savedBooks.length}권이 저장되어 있어요`;
+  const c=document.getElementById('savedList');
+  if(!savedBooks.length){
+    c.innerHTML=`<div style="text-align:center;padding:24px 0;color:var(--ink3);font-size:13px">저장된 책이 없어요</div>`;
+    return;
+  }
+  c.innerHTML=savedBooks.map(b=>`
+    <div class="saved-card">
+      <div class="sv-thumb" style="background:${b.color}"></div>
+      <div class="sv-meta">
+        <div class="sv-title">${b.title}</div>
+        <div class="sv-auth">${b.author}</div>
+        <div style="display:flex;gap:4px"><span class="badge badge-g">${b.category}</span><span class="badge badge-a">${b.badge}</span></div>
+        <div class="sv-note">${b.reason}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// 초기 결과 (데모용)
+recommended=[...DB];
+renderCards(recommended);
+</script>
